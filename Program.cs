@@ -33,7 +33,9 @@ namespace NinetiesTV
             Print("Most Words in Title", WordieastName(shows));
             Print("All Names", AllNamesWithCommas(shows));
             Print("All Names with And", AllNamesWithCommasPlsAnd(shows));
-            // Print("", AllNames)
+            Print("Genres of 80's", EightiesGenres(shows));
+            Print("Unique Geners", UniqueGeners(shows));
+            Print("Number of Shows Starting 1987-2018", NumberOFShowsStartingByYear(shows));
         }
 
         /**************************************************************************************************
@@ -273,15 +275,42 @@ namespace NinetiesTV
         **************************************************************************************************/
 
         // 1. Return the genres of the shows that started in the 80s.
-        static List<Show> eightiesGenres(List<Show> shows)
+        static List<string> EightiesGenres(List<Show> shows)
         {
-            return shows.OrderBy(s => s.Genres)
-                .Where(s => s.StartYear >= 1980 && s.StartYear < 1990).Select(s => s.Genres.Join)
+            return shows
+                .Where(s => s.StartYear >= 1980 && s.StartYear < 1990)
+                .Select(s => string.Join(", ", s.Genres.ToArray()))
+                .ToList();
+            //     return string.Join(", ", shows
+            //     .Where(s => s.StartYear >= 1980 && s.StartYear < 1990).Select(s => s.Genres).ToString());
         }
 
 
         // 2. Print a unique list of geners.
+
+        static List<string> UniqueGeners(List<Show> shows)
+
+        {
+            List<string> genres = new List<string>();
+            var CollectedGenres = shows.Select(s => s.Genres);
+            CollectedGenres.ToList().ForEach(g => genres.AddRange(g));
+            return genres.Distinct().ToList();
+
+        }
         // 3. Print the years 1987 - 2018 along with the number of shows that started in each year (note many years will have zero shows)
+        // static List<int> NumberOfShowsStartingByYear(List<Show> shows)
+        // {
+        //     List<int> showStartYearCount = new List<int>();
+        //     for(int i =1987; i < 2019; i++)
+        //     {
+        //         showStartYearCount.Add(i);
+        //     }
+        //     List<string> dataset =new List<string>();
+        //     var StartingYear = shows.Select(s => s.StartYear);
+        //     StartingYear.ToList().ForEach(s => showStartYearCount)
+
+        // }
+
         // 4. Assume each episode of a comedy is 22 minutes long and each episode of a show that isn't a comedy is 42 minutes. How long would it take to watch every episode of each show?
         // 5. Assume each show ran each year between its start and end years (which isn't true), which year had the highest average IMDB rating.
 
