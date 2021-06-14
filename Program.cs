@@ -33,9 +33,14 @@ namespace NinetiesTV
             Print("Most Words in Title", WordieastName(shows));
             Print("All Names", AllNamesWithCommas(shows));
             Print("All Names with And", AllNamesWithCommasPlsAnd(shows));
+
+            //Challenges
             Print("Genres of 80's", EightiesGenres(shows));
             Print("Unique Geners", UniqueGeners(shows));
-            Print("Number of Shows Starting 1987-2018", NumberOFShowsStartingByYear(shows));
+            Print("Shows Per Year", GetYearCountPairs(shows));
+            Print("How Long to Watch Them All", HowLongToWatchAll(shows));
+            Print("Best TV Year", GetBestYear(shows));
+
         }
 
         /**************************************************************************************************
@@ -58,6 +63,7 @@ namespace NinetiesTV
             return shows.OrderBy(s => s.Name)
                         .Select(s => s.Name)
                         .ToList();
+            // return Names(shows).OrderBy(n => n).ToList(); //Andy's solution using code above
         }
 
         // 3. Return a list of shows ordered by their IMDB Rating with the highest rated show first.
@@ -78,6 +84,8 @@ namespace NinetiesTV
         {
             return shows.OrderBy(s => s.EndYear)
                         .Max(p => p.EndYear);
+
+            //return shows.Max(s => s.EndYear); /// Andy's solution
 
         }
 
@@ -114,6 +122,7 @@ namespace NinetiesTV
             return shows.OrderByDescending(s => s.ImdbRating)
             .Take(shows.Count - 1)
             .ToList();
+            // return shows.OrderBy(s => s.ImdbRating).Skip(1).ToList();  ///Andy's
         }
 
         // 11. Return the names of the shows that had fewer than 100 episodes.
@@ -138,6 +147,12 @@ namespace NinetiesTV
                 .Where(s => s.Genres.Contains("Comedy"))
                 .Select(s => s.Name)
                 .ToList();
+
+            //  return shows                 ///  Andy's
+            // .Where(s => s.Genres.Contains("Comedy"))
+            // .OrderBy(s => s.ImdbRating)
+            // .Select(s => s.Name)
+            // .ToList();
         }
 
         // 14. Return the shows with more than one genre ordered by their starting year.
@@ -146,6 +161,8 @@ namespace NinetiesTV
             return shows.OrderBy(s => s.StartYear)
             .Where(s => s.Genres.Count() > 1)
             .ToList();
+
+            //Andy reversed order of where and orderby
         }
 
         // 15. Return the show with the most episodes.
@@ -154,6 +171,9 @@ namespace NinetiesTV
             // throw new NotImplementedException();
             return shows.OrderByDescending(s => s.EpisodeCount)
                     .First();
+
+            // int maxEpCount = shows.Max(s => s.EpisodeCount);    /// Andy's
+            // return shows.FirstOrDefault(s => s.EpisodeCount == maxEpCount);
 
 
         }
@@ -166,7 +186,9 @@ namespace NinetiesTV
             return shows.OrderBy(s => s.EndYear)
                 .Where(s => s.EndYear >= 2000)
                 .First();
-
+            // return shows    ///Andy's
+            //     .OrderBy(s => s.EndYear)
+            //     .FirstOrDefault(s => s.EndYear >= 2000);
         }
 
         // 17. Order the shows by rating (highest first) 
@@ -178,6 +200,10 @@ namespace NinetiesTV
                         .Where(s => s.Genres.Contains("Drama"))
                         .First();
 
+            // return shows   ///Andy's
+            //     .OrderByDescending(s => s.ImdbRating)
+            //     .FirstOrDefault(s => s.Genres.Contains("Drama"));
+
         }
 
         // 18. Return all dramas except for the highest rated.
@@ -188,6 +214,11 @@ namespace NinetiesTV
             .Where(s => s.Genres.Contains("Drama"))
             .Take(shows.Count - 1)
             .ToList();
+            // return shows   Andy's
+            //     .OrderByDescending(s => s.ImdbRating)
+            //     .Where(s => s.Genres.Contains("Drama"))
+            //     .Skip(1)
+            //     .ToList();
         }
 
         // 19. Return the number of crime shows with an IMDB rating greater than 7.0.
@@ -198,6 +229,8 @@ namespace NinetiesTV
             return shows.Where(s => s.Genres.Contains("Crime") && s.ImdbRating > 7.0)
                         .ToList()
                         .Count();
+
+            /// Andy's solution omitted tolist
         }
 
         // 20. Return the first show that ran for more than 10 years 
@@ -207,6 +240,11 @@ namespace NinetiesTV
             return shows.OrderBy(s => s.Name)
                         .Where(s => s.ImdbRating < 8.0 && s.EndYear - s.StartYear > 10)
                         .First();
+            //  return shows  ///Andy's
+            //     .Where(s => s.EndYear - s.StartYear > 10)
+            //     .Where(s => s.ImdbRating > 8)
+            //     .OrderBy(s => s.Name)
+            //     .FirstOrDefault();
         }
 
         // 21. Return the show with the most words in the name.
@@ -228,6 +266,7 @@ namespace NinetiesTV
             // }
             // return shows.OrderBy(o => o.Name).FirstOrDefault(s => s.Name == title);
             return shows.OrderByDescending(s => s.Name.Split(" ").Count()).First();
+            /// Andy used FirstOrDefault rather than First
 
         }
 
@@ -258,7 +297,9 @@ namespace NinetiesTV
             // return $"{first} and {last}";
 
             return $"{string.Join(", ", shows.Select(s => s.Name).Take(shows.Count - 1))} and {shows[shows.Count - 1].Name}";
-
+            //  List<string> names = shows.Select(s => s.Name).ToList();     // Andy's
+            // string str = string.Join(", ", names.Take(names.Count - 1));
+            // return str + ", and " + names.Last();
         }
 
 
@@ -281,6 +322,14 @@ namespace NinetiesTV
                 .Where(s => s.StartYear >= 1980 && s.StartYear < 1990)
                 .Select(s => string.Join(", ", s.Genres.ToArray()))
                 .ToList();
+
+            // return shows    /// Andy's
+            //     .Where(s => s.StartYear >= 1990)
+            //     .SelectMany(s => s.Genres)
+            //     .Distinct()
+            //     .OrderBy(genre => genre)
+            //     .ToList();
+
             //     return string.Join(", ", shows
             //     .Where(s => s.StartYear >= 1980 && s.StartYear < 1990).Select(s => s.Genres).ToString());
         }
@@ -296,7 +345,16 @@ namespace NinetiesTV
             CollectedGenres.ToList().ForEach(g => genres.AddRange(g));
             return genres.Distinct().ToList();
 
+            // return shows   ///   Andy's
+            //     .SelectMany(s => s.Genres)
+            //     .Distinct()
+            //     .OrderBy(genre => genre)
+            //     .ToList();
+
+
         }
+
+
         // 3. Print the years 1987 - 2018 along with the number of shows that started in each year (note many years will have zero shows)
         // static List<int> NumberOfShowsStartingByYear(List<Show> shows)
         // {
@@ -311,9 +369,60 @@ namespace NinetiesTV
 
         // }
 
-        // 4. Assume each episode of a comedy is 22 minutes long and each episode of a show that isn't a comedy is 42 minutes. How long would it take to watch every episode of each show?
-        // 5. Assume each show ran each year between its start and end years (which isn't true), which year had the highest average IMDB rating.
+        /// Andy's solution below
+        static List<YearCountPair> GetYearCountPairs(List<Show> shows)
+        {
+            return Enumerable.Range(1987, 32)
+                .GroupJoin(shows,
+                    year => year,
+                    show => show.StartYear,
+                    (year, shows) => new YearCountPair(year, shows.Count()))
+                .ToList();
+        }
 
+        // 4. Assume each episode of a comedy is 22 minutes long and each episode of a show that isn't a comedy is 42 minutes. How long would it take to watch every episode of each show?
+        /// Andy's solution
+        static string HowLongToWatchAll(List<Show> shows)
+        {
+            int totalMinutes = shows
+                .Select(s => s.EpisodeCount * (s.Genres.Contains("Comedy") ? 22 : 42))
+                .Sum();
+
+            int days = totalMinutes / (24 * 60);
+            int leftoverMinutes = totalMinutes % (24 * 60);
+            int hours = leftoverMinutes / 60;
+            int minutes = leftoverMinutes % 60;
+
+            string daysText = SimplePluralizer("day", days);
+            string hoursText = SimplePluralizer("hour", hours);
+            string minutesText = SimplePluralizer("minute", minutes);
+
+            return $"{daysText}, {hoursText} and {minutesText}";
+        }
+
+        static string SimplePluralizer(string text, int num)
+        {
+            return num + $" {text}" + (num == 1 ? "" : "s");
+        }
+        // 5. Assume each show ran each year between its start and end years (which isn't true), which year had the highest average IMDB rating.
+        //  Andy's Solution below
+        static int GetBestYear(List<Show> shows)
+        {
+            IEnumerable<YearRatingPair> yearRatingsPerShow =
+                shows.SelectMany(s =>
+                {
+                    IEnumerable<int> years = Enumerable.Range(s.StartYear, s.EndYear - s.StartYear);
+
+                    return years.Select(year => new YearRatingPair(year, s.ImdbRating));
+                });
+
+            IEnumerable<YearRatingPair> yearRatings =
+                yearRatingsPerShow
+                    .GroupBy(yrp => yrp.Year)
+                    .Select(g => new YearRatingPair(g.Key, g.Average(yrp => yrp.Rating)));
+
+            return yearRatings.OrderByDescending(yr => yr.Rating).FirstOrDefault().Year;
+        }
 
 
         /**************************************************************************************************
